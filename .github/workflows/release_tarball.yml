@@ -19,7 +19,7 @@ jobs:
     - name: archive
       id: archive
       run: |
-        apt install -y gperf
+        sudo apt install -y gperf
         rm -rf .git
         autoreconf -i
         VERSION=$(cat VERSION)
