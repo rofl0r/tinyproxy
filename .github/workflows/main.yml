@@ -18,11 +18,24 @@ jobs:
   test-macos:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: brew install automake
-    - run: ./autogen.sh
-    - run: ./configure
-    - run: make
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: build
+      run: |
+        brew install automake
+        ./autogen.sh
+        CFLAGS="-Os -arch arm64 -arch x86_64" LDFLAGS="-s -arch arm64 -arch x86_64" ./configure
+        make && make DESTDIR=/tmp/tinyproxy-macos-git-master install
+    - name: mac pack
+      run: |
+        cd /tmp
+        tar czf tinyproxy-macos-git-master.tar.gz tinyproxy-macos-git-master
+    - name: upload mac artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: tinyproxy-macos-git-master.tar.gz
+        path: /tmp/tinyproxy-macos-git-master.tar.gz
+
   valgrind-test:
     runs-on: ubuntu-latest
     steps:
