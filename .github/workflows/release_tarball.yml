@@ -36,13 +36,5 @@ jobs:
         files: |
           ${{ steps.archive.outputs.tarball_xz }}
           ${{ steps.archive.outputs.tarball_gz }}
+          ${{ steps.archive.outputs.tarball_bz2 }}
 
-    - name: upload tarball_bz2
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./${{ steps.archive.outputs.tarball_bz2 }}
-        asset_name: ${{ steps.archive.outputs.tarball_bz2 }}
-        asset_content_type: application/x-bzip2
